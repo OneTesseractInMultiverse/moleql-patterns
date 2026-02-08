@@ -22,7 +22,7 @@
 
 import pytest
 
-from moleql_patterns.api_operation import AccessDeniedError
+from moleql_patterns.contracts import AccessDeniedError
 
 from ._api_operation_shared import (
     ExampleResult,
@@ -35,6 +35,9 @@ from ._api_operation_shared import (
 )
 
 
+# =========================================================
+# CLASS TEST API OPERATION VERIFY ACCESS
+# =========================================================
 class TestAPIOperationVerifyAccess:
     def test_verify_access_blocks_execution(self) -> None:
         operation = SyncAccessDeniedOperation()
@@ -60,6 +63,9 @@ class TestAPIOperationVerifyAccess:
         assert operation.access_checked is True
 
 
+# =========================================================
+# CLASS TEST API OPERATION EXECUTE
+# =========================================================
 class TestAPIOperationExecute:
     def test_execute_returns_model(self) -> None:
         operation = SyncFlagOperation()

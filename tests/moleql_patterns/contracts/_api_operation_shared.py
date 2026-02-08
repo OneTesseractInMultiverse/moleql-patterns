@@ -22,13 +22,19 @@
 
 from pydantic import BaseModel
 
-from moleql_patterns.api_operation import AccessDeniedError, APIOperation, AsyncAPIOperation
+from moleql_patterns.contracts import AccessDeniedError, APIOperation, AsyncAPIOperation
 
 
+# =========================================================
+# CLASS EXAMPLE RESULT
+# =========================================================
 class ExampleResult(BaseModel):
     value: int
 
 
+# =========================================================
+# CLASS SYNC ACCESS DENIED OPERATION
+# =========================================================
 class SyncAccessDeniedOperation(APIOperation[ExampleResult]):
     def verify_access(self) -> None:
         raise AccessDeniedError("denied")
@@ -37,6 +43,9 @@ class SyncAccessDeniedOperation(APIOperation[ExampleResult]):
         return ExampleResult(value=1)
 
 
+# =========================================================
+# CLASS SYNC FLAG OPERATION
+# =========================================================
 class SyncFlagOperation(APIOperation[ExampleResult]):
     def __init__(self) -> None:
         self.access_checked = False
@@ -48,16 +57,25 @@ class SyncFlagOperation(APIOperation[ExampleResult]):
         return ExampleResult(value=1)
 
 
+# =========================================================
+# CLASS SYNC MISSING VERIFY ACCESS
+# =========================================================
 class SyncMissingVerifyAccess(APIOperation[ExampleResult]):
     def _execute(self) -> ExampleResult:
         return ExampleResult(value=1)
 
 
+# =========================================================
+# CLASS SYNC MISSING EXECUTE
+# =========================================================
 class SyncMissingExecute(APIOperation[ExampleResult]):
     def verify_access(self) -> None:
         return None
 
 
+# =========================================================
+# CLASS SYNC BASE VERIFY ACCESS OPERATION
+# =========================================================
 class SyncBaseVerifyAccessOperation(APIOperation[ExampleResult]):
     def verify_access(self) -> None:
         return APIOperation.verify_access(self)
@@ -66,6 +84,9 @@ class SyncBaseVerifyAccessOperation(APIOperation[ExampleResult]):
         return ExampleResult(value=1)
 
 
+# =========================================================
+# CLASS SYNC BASE EXECUTE OPERATION
+# =========================================================
 class SyncBaseExecuteOperation(APIOperation[ExampleResult]):
     def verify_access(self) -> None:
         return None
@@ -74,6 +95,9 @@ class SyncBaseExecuteOperation(APIOperation[ExampleResult]):
         return APIOperation._execute(self)
 
 
+# =========================================================
+# CLASS ASYNC ACCESS DENIED OPERATION
+# =========================================================
 class AsyncAccessDeniedOperation(AsyncAPIOperation[ExampleResult]):
     def verify_access(self) -> None:
         raise AccessDeniedError("denied")
@@ -82,6 +106,9 @@ class AsyncAccessDeniedOperation(AsyncAPIOperation[ExampleResult]):
         return ExampleResult(value=1)
 
 
+# =========================================================
+# CLASS ASYNC FLAG OPERATION
+# =========================================================
 class AsyncFlagOperation(AsyncAPIOperation[ExampleResult]):
     def __init__(self) -> None:
         self.access_checked = False
@@ -93,16 +120,25 @@ class AsyncFlagOperation(AsyncAPIOperation[ExampleResult]):
         return ExampleResult(value=1)
 
 
+# =========================================================
+# CLASS ASYNC MISSING VERIFY ACCESS
+# =========================================================
 class AsyncMissingVerifyAccess(AsyncAPIOperation[ExampleResult]):
     async def _execute_async(self) -> ExampleResult:
         return ExampleResult(value=1)
 
 
+# =========================================================
+# CLASS ASYNC MISSING EXECUTE ASYNC
+# =========================================================
 class AsyncMissingExecuteAsync(AsyncAPIOperation[ExampleResult]):
     def verify_access(self) -> None:
         return None
 
 
+# =========================================================
+# CLASS ASYNC BASE VERIFY ACCESS OPERATION
+# =========================================================
 class AsyncBaseVerifyAccessOperation(AsyncAPIOperation[ExampleResult]):
     def verify_access(self) -> None:
         return AsyncAPIOperation.verify_access(self)
@@ -111,6 +147,9 @@ class AsyncBaseVerifyAccessOperation(AsyncAPIOperation[ExampleResult]):
         return ExampleResult(value=1)
 
 
+# =========================================================
+# CLASS ASYNC BASE EXECUTE OPERATION
+# =========================================================
 class AsyncBaseExecuteOperation(AsyncAPIOperation[ExampleResult]):
     def verify_access(self) -> None:
         return None

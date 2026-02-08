@@ -20,8 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Backward-compatible re-exports for API operation contracts."""
+from moleql_patterns.contracts import (
+    TaskData as ContractsTaskData,
+)
+from moleql_patterns.contracts import (
+    TaskDeserializationError as ContractsTaskDeserializationError,
+)
+from moleql_patterns.contracts import (
+    TaskSerializationError as ContractsTaskSerializationError,
+)
+from moleql_patterns.task_data import TaskData, TaskDeserializationError, TaskSerializationError
 
-from .contracts.api_operation import AccessDeniedError, APIOperation, AsyncAPIOperation
 
-__all__ = ["APIOperation", "AsyncAPIOperation", "AccessDeniedError"]
+# =========================================================
+# CLASS TEST TASK DATA MODULE EXPORTS
+# =========================================================
+class TestTaskDataModuleExports:
+    def test_task_data_reexport(self) -> None:
+        assert TaskData is ContractsTaskData
+
+    def test_task_serialization_error_reexport(self) -> None:
+        assert TaskSerializationError is ContractsTaskSerializationError
+
+    def test_task_deserialization_error_reexport(self) -> None:
+        assert TaskDeserializationError is ContractsTaskDeserializationError

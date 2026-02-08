@@ -24,7 +24,7 @@ import asyncio
 
 import pytest
 
-from moleql_patterns.api_operation import AccessDeniedError
+from moleql_patterns.contracts import AccessDeniedError
 
 from ._api_operation_shared import (
     AsyncAccessDeniedOperation,
@@ -37,6 +37,9 @@ from ._api_operation_shared import (
 )
 
 
+# =========================================================
+# CLASS TEST ASYNC API OPERATION VERIFY ACCESS
+# =========================================================
 class TestAsyncAPIOperationVerifyAccess:
     def test_verify_access_blocks_execution(self) -> None:
         operation = AsyncAccessDeniedOperation()
@@ -62,6 +65,9 @@ class TestAsyncAPIOperationVerifyAccess:
         assert operation.access_checked is True
 
 
+# =========================================================
+# CLASS TEST ASYNC API OPERATION EXECUTE ASYNC
+# =========================================================
 class TestAsyncAPIOperationExecuteAsync:
     def test_execute_async_returns_model(self) -> None:
         operation = AsyncFlagOperation()

@@ -19,9 +19,3 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-"""Backward-compatible re-exports for API operation contracts."""
-
-from .contracts.api_operation import AccessDeniedError, APIOperation, AsyncAPIOperation
-
-__all__ = ["APIOperation", "AsyncAPIOperation", "AccessDeniedError"]

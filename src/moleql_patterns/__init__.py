@@ -20,7 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .api_operation import AccessDeniedError, APIOperation, AsyncAPIOperation
+from .contracts import (
+    AccessDeniedError,
+    APIOperation,
+    AsyncAPIOperation,
+    TaskData,
+    TaskDeserializationError,
+    TaskSerializationError,
+)
 
-__all__ = ["APIOperation", "AsyncAPIOperation", "AccessDeniedError", "__version__"]
+__all__ = [
+    "APIOperation",
+    "AsyncAPIOperation",
+    "AccessDeniedError",
+    "TaskData",
+    "TaskSerializationError",
+    "TaskDeserializationError",
+    "__version__",
+]
 __version__ = "0.1.0"

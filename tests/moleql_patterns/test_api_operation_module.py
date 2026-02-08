@@ -20,8 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Backward-compatible re-exports for API operation contracts."""
+from moleql_patterns.api_operation import AccessDeniedError, APIOperation, AsyncAPIOperation
+from moleql_patterns.contracts import (
+    AccessDeniedError as ContractsAccessDeniedError,
+)
+from moleql_patterns.contracts import (
+    APIOperation as ContractsAPIOperation,
+)
+from moleql_patterns.contracts import (
+    AsyncAPIOperation as ContractsAsyncAPIOperation,
+)
 
-from .contracts.api_operation import AccessDeniedError, APIOperation, AsyncAPIOperation
 
-__all__ = ["APIOperation", "AsyncAPIOperation", "AccessDeniedError"]
+# =========================================================
+# CLASS TEST API OPERATION MODULE EXPORTS
+# =========================================================
+class TestApiOperationModuleExports:
+    def test_api_operation_reexport(self) -> None:
+        assert APIOperation is ContractsAPIOperation
+
+    def test_async_api_operation_reexport(self) -> None:
+        assert AsyncAPIOperation is ContractsAsyncAPIOperation
+
+    def test_access_denied_error_reexport(self) -> None:
+        assert AccessDeniedError is ContractsAccessDeniedError
