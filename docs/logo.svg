@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="300" viewBox="0 0 1200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="circle-a" clipPathUnits="userSpaceOnUse">
+      <circle cx="140" cy="150" r="44" />
+    </clipPath>
+    <clipPath id="circle-b" clipPathUnits="userSpaceOnUse">
+      <circle cx="240" cy="90" r="36" />
+    </clipPath>
+    <clipPath id="circle-c" clipPathUnits="userSpaceOnUse">
+      <circle cx="275" cy="210" r="36" />
+    </clipPath>
+  </defs>
+
+  <rect width="1200" height="300" fill="white"/>
+
+  <!-- Molecule connections -->
+  <g stroke="#0F4DA8" stroke-width="6" stroke-linecap="round">
+    <line x1="140" y1="150" x2="240" y2="90" />
+    <line x1="140" y1="150" x2="275" y2="210" />
+    <line x1="240" y1="90" x2="275" y2="210" />
+  </g>
+
+  <!-- Striped nodes (IBM-inspired rhythm, original geometry) -->
+  <g fill="#0F4DA8">
+    <g clip-path="url(#circle-a)">
+      <rect x="80" y="118" width="120" height="6" />
+      <rect x="80" y="132" width="120" height="6" />
+      <rect x="80" y="146" width="120" height="6" />
+      <rect x="80" y="160" width="120" height="6" />
+      <rect x="80" y="174" width="120" height="6" />
+    </g>
+    <g clip-path="url(#circle-b)">
+      <rect x="200" y="66" width="80" height="5" />
+      <rect x="200" y="78" width="80" height="5" />
+      <rect x="200" y="90" width="80" height="5" />
+      <rect x="200" y="102" width="80" height="5" />
+      <rect x="200" y="114" width="80" height="5" />
+    </g>
+    <g clip-path="url(#circle-c)">
+      <rect x="235" y="186" width="80" height="5" />
+      <rect x="235" y="198" width="80" height="5" />
+      <rect x="235" y="210" width="80" height="5" />
+      <rect x="235" y="222" width="80" height="5" />
+      <rect x="235" y="234" width="80" height="5" />
+    </g>
+  </g>
+
+  <!-- Node outlines -->
+  <g stroke="#0F4DA8" stroke-width="6" fill="none">
+    <circle cx="140" cy="150" r="44" />
+    <circle cx="240" cy="90" r="36" />
+    <circle cx="275" cy="210" r="36" />
+  </g>
+
+  <!-- Wordmark -->
+  <text x="360" y="165" font-family="IBM Plex Sans, Helvetica, Arial, sans-serif" font-size="72" font-weight="700" fill="#0F4DA8" letter-spacing="1">
+    MoleQL
+  </text>
+  <text x="705" y="165" font-family="IBM Plex Sans, Helvetica, Arial, sans-serif" font-size="72" font-weight="500" fill="#4B5563" letter-spacing="0.5">
+    Patterns
+  </text>
+</svg>
