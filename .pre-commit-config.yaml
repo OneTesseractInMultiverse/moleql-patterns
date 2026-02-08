@@ -1,0 +1,55 @@
+repos:
+  # Ruff: lint + format
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+        stages: [pre-commit]
+
+      - id: ruff-format
+        stages: [pre-commit]
+
+  # General hygiene hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        stages: [pre-commit]
+
+      - id: end-of-file-fixer
+        stages: [pre-commit]
+
+      - id: check-yaml
+        stages: [pre-commit]
+
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+        stages: [pre-commit]
+
+  # Local, project-specific hooks
+  - repo: local
+    hooks:
+      # Ensure all Python files have MIT license headers
+      - id: license-headers
+        name: Check MIT license headers
+        entry: uv run python tools/check_license_headers.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # Ensure uv.lock exists and matches pyproject.toml
+      - id: uv-lock-consistency
+        name: Check uv.lock consistency
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # Enforce tests + coverage before pushing
+      - id: pytest-cov
+        name: pytest (coverage >= 90%)
+        entry: uv run pytest
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

@@ -1,0 +1,20 @@
+moleql-patterns
+
+Copyright (c) 2026 Pedro Guzmán
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+moleql-patterns is an open-source library providing reusable base classes and
+design patterns for decoupled application architecture, built on Pydantic and
+inspired by FastAPI.
+
+Unless otherwise noted, all files in this repository are authored by
+Pedro Guzmán.
+
+This software is provided "as is", without warranty of any kind, express or
+implied.
+
+Third-Party Components
+
+This product may include software developed by third parties.
+Such software is licensed under its own terms and conditions.
