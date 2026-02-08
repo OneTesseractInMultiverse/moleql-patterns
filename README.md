@@ -1,4 +1,4 @@
-# moleql-patterns
+# MoleQL Patterns
 
 Reusable base classes and design patterns for clean, decoupled application architecture.
 
