@@ -41,17 +41,32 @@ uv run ruff check .
 ### Format
 
 ```bash
-uv run ruff format .
+make format
 ```
 
 ### Tests and Coverage
 
 ```bash
-uv run pytest
+make test
 ```
 
 - Coverage is enforced at **90% minimum**
 - XML report is generated at `coverage.xml`
+
+### Hooks
+
+```bash
+make hooks
+```
+
+### Dependency Upgrades + Version Bumps
+
+```bash
+make upgrade
+make bump-patch
+make bump-minor
+make bump-major
+```
 
 ## Pre-commit Hooks
 
@@ -75,7 +90,7 @@ Runs before every push:
 You can run them manually:
 
 ```bash
-uv run pre-commit run --all-files
+make hooks
 uv run pre-commit run --hook-stage pre-push
 ```
 

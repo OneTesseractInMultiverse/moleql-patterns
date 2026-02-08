@@ -19,6 +19,26 @@ This project is designed to be used as *infrastructure*: explicit, predictable, 
 
 ---
 
+## Make Commands
+
+This repository includes a Makefile with common developer workflows:
+
+```bash
+make help
+make test
+make format
+make build
+make hooks
+make upgrade
+make bump-patch
+make bump-minor
+make bump-major
+```
+
+Use `make help` to see the full list of commands and descriptions.
+
+---
+
 ## Project Principles
 
 - Explicit over implicit
@@ -32,6 +52,12 @@ This project is designed to be used as *infrastructure*: explicit, predictable, 
 ## Status
 
 This project is in early development. APIs may evolve until a stable `1.0` release.
+
+---
+
+## Requirements
+
+- Python **3.12+**
 
 ---
 

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Base class for decoupled, testable API operations.
+"""Base classes for decoupled, testable API operations.
 
 Design goals:
 - Dependencies are injected via the concrete class constructor.
@@ -29,6 +29,18 @@ Design goals:
 
 Usage:
     class CreateUser(APIOperation[User]):
+        def __init__(self, repo: UserRepo, current_user: User) -> None:
+            self._repo = repo
+            self._current_user = current_user
+
+        def verify_access(self) -> None:
+            if not self._current_user.is_admin:
+                raise AccessDeniedError("Only admins can create users.")
+
+        def _execute(self) -> User:
+            return self._repo.create_user(...)
+
+    class CreateUserAsync(AsyncAPIOperation[User]):
         def __init__(self, repo: UserRepo, current_user: User) -> None:
             self._repo = repo
             self._current_user = current_user
@@ -46,7 +58,7 @@ from typing import Generic, TypeVar
 
 from pydantic import BaseModel
 
-__all__ = ["APIOperation", "AccessDeniedError"]
+__all__ = ["APIOperation", "AsyncAPIOperation", "AccessDeniedError"]
 
 ResultT = TypeVar("ResultT", bound=BaseModel)
 
@@ -56,7 +68,37 @@ class AccessDeniedError(PermissionError):
 
 
 class APIOperation(Generic[ResultT], ABC):
-    """Base class for API operations with explicit access checks.
+    """Synchronous base class for API operations with explicit access checks.
+
+    Concrete classes should:
+    - Accept dependencies via ``__init__``.
+    - Implement ``verify_access`` to enforce authorization.
+    - Implement ``_execute`` with the operation logic.
+    - Return a Pydantic ``BaseModel`` from ``execute``.
+    """
+
+    @abstractmethod
+    def verify_access(self) -> None:
+        """Validate permissions for this operation.
+
+        Implementations should raise ``AccessDeniedError`` (or ``PermissionError``)
+        when the current principal is not authorized.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _execute(self) -> ResultT:
+        """Execute the operation logic synchronously."""
+        raise NotImplementedError
+
+    def execute(self) -> ResultT:
+        """Execute synchronously with access checks."""
+        self.verify_access()
+        return self._execute()
+
+
+class AsyncAPIOperation(Generic[ResultT], ABC):
+    """Asynchronous base class for API operations with explicit access checks.
 
     Concrete classes should:
     - Accept dependencies via ``__init__``.

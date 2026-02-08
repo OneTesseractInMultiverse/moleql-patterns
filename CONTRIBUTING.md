@@ -45,14 +45,30 @@ uv run pre-commit install --hook-type pre-push
 
 3. Run checks locally
    ```bash
-   uv run pre-commit run --all-files
-   uv run pytest
+   make hooks
+   make test
    ```
 
 4. Push your branch
    ```bash
    git push
    ```
+
+## Makefile Shortcuts
+
+Common developer tasks are available via `make`:
+
+```bash
+make help
+make test
+make format
+make build
+make hooks
+make upgrade
+make bump-patch
+make bump-minor
+make bump-major
+```
 
 ## Pull Requests
 

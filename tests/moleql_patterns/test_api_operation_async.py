@@ -23,99 +23,59 @@
 import asyncio
 
 import pytest
-from pydantic import BaseModel
 
-from moleql_patterns.api_operation import AccessDeniedError, APIOperation
+from moleql_patterns.api_operation import AccessDeniedError
 
-
-class _ExampleResult(BaseModel):
-    value: int
-
-
-class _AccessDeniedOperation(APIOperation[_ExampleResult]):
-    def verify_access(self) -> None:
-        raise AccessDeniedError("denied")
-
-    async def _execute_async(self) -> _ExampleResult:
-        return _ExampleResult(value=1)
+from ._api_operation_shared import (
+    AsyncAccessDeniedOperation,
+    AsyncBaseExecuteOperation,
+    AsyncBaseVerifyAccessOperation,
+    AsyncFlagOperation,
+    AsyncMissingExecuteAsync,
+    AsyncMissingVerifyAccess,
+    ExampleResult,
+)
 
 
-class _FlagOperation(APIOperation[_ExampleResult]):
-    def __init__(self) -> None:
-        self.access_checked = False
-
-    def verify_access(self) -> None:
-        self.access_checked = True
-
-    async def _execute_async(self) -> _ExampleResult:
-        return _ExampleResult(value=1)
-
-
-class _MissingVerifyAccess(APIOperation[_ExampleResult]):
-    async def _execute_async(self) -> _ExampleResult:
-        return _ExampleResult(value=1)
-
-
-class _MissingExecuteAsync(APIOperation[_ExampleResult]):
-    def verify_access(self) -> None:
-        return None
-
-
-class _BaseVerifyAccessOperation(APIOperation[_ExampleResult]):
-    def verify_access(self) -> None:
-        return APIOperation.verify_access(self)
-
-    async def _execute_async(self) -> _ExampleResult:
-        return _ExampleResult(value=1)
-
-
-class _BaseExecuteAsyncOperation(APIOperation[_ExampleResult]):
-    def verify_access(self) -> None:
-        return None
-
-    async def _execute_async(self) -> _ExampleResult:
-        return await APIOperation._execute_async(self)
-
-
-class TestVerifyAccess:
+class TestAsyncAPIOperationVerifyAccess:
     def test_verify_access_blocks_execution(self) -> None:
-        operation = _AccessDeniedOperation()
+        operation = AsyncAccessDeniedOperation()
 
         with pytest.raises(AccessDeniedError):
             asyncio.run(operation.execute_async())
 
     def test_verify_access_base_raises(self) -> None:
-        operation = _BaseVerifyAccessOperation()
+        operation = AsyncBaseVerifyAccessOperation()
 
         with pytest.raises(NotImplementedError):
             asyncio.run(operation.execute_async())
 
     def test_verify_access_is_required(self) -> None:
         with pytest.raises(TypeError):
-            _MissingVerifyAccess()
+            AsyncMissingVerifyAccess()
 
     def test_verify_access_runs(self) -> None:
-        operation = _FlagOperation()
+        operation = AsyncFlagOperation()
 
         asyncio.run(operation.execute_async())
 
         assert operation.access_checked is True
 
 
-class TestExecuteAsync:
+class TestAsyncAPIOperationExecuteAsync:
     def test_execute_async_returns_model(self) -> None:
-        operation = _FlagOperation()
+        operation = AsyncFlagOperation()
 
         result = asyncio.run(operation.execute_async())
 
-        assert isinstance(result, _ExampleResult)
+        assert isinstance(result, ExampleResult)
 
     def test_execute_async_base_raises(self) -> None:
-        operation = _BaseExecuteAsyncOperation()
+        operation = AsyncBaseExecuteOperation()
 
         with pytest.raises(NotImplementedError):
             asyncio.run(operation.execute_async())
 
     def test_execute_async_is_required(self) -> None:
         with pytest.raises(TypeError):
-            _MissingExecuteAsync()
+            AsyncMissingExecuteAsync()
