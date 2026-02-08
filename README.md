@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/OneTesseractInMultiverse/moleql-patterns/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/OneTesseractInMultiverse/moleql-patterns/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/OneTesseractInMultiverse/moleql-patterns/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/OneTesseractInMultiverse/moleql-patterns/actions/workflows/codeql.yml)
+[![Codecov](https://codecov.io/gh/OneTesseractInMultiverse/moleql-patterns/branch/main/graph/badge.svg)](https://codecov.io/gh/OneTesseractInMultiverse/moleql-patterns)
 
 Reusable base classes and design patterns for clean, decoupled application architecture.
 
