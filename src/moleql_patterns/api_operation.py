@@ -54,20 +54,17 @@ Usage:
 """
 
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
 
 from pydantic import BaseModel
 
 __all__ = ["APIOperation", "AsyncAPIOperation", "AccessDeniedError"]
-
-ResultT = TypeVar("ResultT", bound=BaseModel)
 
 
 class AccessDeniedError(PermissionError):
     """Raised when an operation is not permitted for the current principal."""
 
 
-class APIOperation(Generic[ResultT], ABC):
+class APIOperation[ResultT: BaseModel](ABC):
     """Synchronous base class for API operations with explicit access checks.
 
     Concrete classes should:
@@ -97,7 +94,7 @@ class APIOperation(Generic[ResultT], ABC):
         return self._execute()
 
 
-class AsyncAPIOperation(Generic[ResultT], ABC):
+class AsyncAPIOperation[ResultT: BaseModel](ABC):
     """Asynchronous base class for API operations with explicit access checks.
 
     Concrete classes should:
