@@ -1,5 +1,8 @@
 # MoleQL Patterns
 
+[![CI](https://github.com/OneTesseractInMultiverse/moleql-patterns/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/OneTesseractInMultiverse/moleql-patterns/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/OneTesseractInMultiverse/moleql-patterns/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/OneTesseractInMultiverse/moleql-patterns/actions/workflows/codeql.yml)
+
 Reusable base classes and design patterns for clean, decoupled application architecture.
 
 **moleql-patterns** is a lightweight Python library built on **Pydantic** and inspired by **FastAPI**.
