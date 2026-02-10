@@ -6,7 +6,7 @@
 help:
 	@printf "Usage: make <target>\n\n"
 	@printf "Targets:\n"
-	@awk 'BEGIN {FS = ":.*##";} /^[a-zA-Z0-9_-]+:.*##/ {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_-]+:.*##/ {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 test: ## Run unit tests verbosely with coverage report
 	uv run pytest -vv --cov-report=term-missing
@@ -25,23 +25,7 @@ upgrade: ## Upgrade deps and bump patch version (then run hooks + tests)
 	$(MAKE) bump-patch
 
 bump: ## Bump version based on BUMP=major|minor|patch (then run hooks + tests)
-	uv run python -c 'import os,re; from pathlib import Path; pyproject=Path("pyproject.toml"); text=pyproject.read_text(); m=re.search(r"^version\\s*=\\s*\\\"([^\\\"]+)\\\"", text, re.M); \
-	if not m: raise SystemExit("version not found in pyproject.toml"); current=m.group(1); parts=current.split("."); \
-	if len(parts) != 3 or not all(p.isdigit() for p in parts): raise SystemExit("version must be major.minor.patch"); \
-	major, minor, patch = (int(p) for p in parts); bump=os.environ.get("BUMP"); \
-	if bump == "major": major += 1; minor = 0; patch = 0; \
-	elif bump == "minor": minor += 1; patch = 0; \
-	elif bump == "patch": patch += 1; \
-	else: raise SystemExit("BUMP must be major, minor, or patch"); \
-	new=f"{major}.{minor}.{patch}"; \
-	text, py_count = re.subn(r"^version\\s*=\\s*\\\"[^\\\"]+\\\"", f"version = \\\"{new}\\\"", text, count=1, flags=re.M); \
-	if py_count != 1: raise SystemExit("version not updated in pyproject.toml"); \
-	pyproject.write_text(text); \
-	init=Path("src/moleql_patterns/__init__.py"); init_text=init.read_text(); \
-	init_text, init_count = re.subn(r"^__version__\\s*=\\s*\\\"[^\\\"]+\\\"", f"__version__ = \\\"{new}\\\"", init_text, count=1, flags=re.M); \
-	if init_count != 1: raise SystemExit("version not updated in __init__.py"); \
-	init.write_text(init_text); \
-	print(f"Bumped version: {current} -> {new}")'
+	uv run python tools/version.py bump $(BUMP)
 	$(MAKE) hooks
 	$(MAKE) test
 
@@ -55,20 +39,10 @@ bump-major: ## Bump major version (X.y.z -> (X+1).0.0)
 	BUMP=major $(MAKE) bump
 
 tag: ## Create an annotated git tag from pyproject.toml (vX.Y.Z)
-	@version=$$(uv run python -c 'import re; from pathlib import Path; text=Path("pyproject.toml").read_text(); m=re.search(r"^version\\s*=\\s*\\\"([^\\\"]+)\\\"", text, re.M); \
-	if not m: raise SystemExit("version not found in pyproject.toml"); print(m.group(1));'); \
-	echo "Tagging v$$version"; \
-	git tag -a "v$$version" -m "Release v$$version"
+	@version=$$(uv run python tools/version.py get) && echo "Tagging v$$version" && git tag -a "v$$version" -m "Release v$$version"
 
 tag-push: ## Push the current tag to origin
 	git push origin --tags
 
 release: ## Interactive version bump (patch, minor, major)
-	@printf "Select version bump:\n  1) patch\n  2) minor\n  3) major\n"
-	@read -r choice; \
-	case $$choice in \
-	  1|patch) $(MAKE) bump-patch ;; \
-	  2|minor) $(MAKE) bump-minor ;; \
-	  3|major) $(MAKE) bump-major ;; \
-	  *) echo "Invalid choice"; exit 1 ;; \
-	esac
+	uv run python tools/release.py

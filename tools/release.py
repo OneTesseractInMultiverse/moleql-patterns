@@ -20,33 +20,37 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .commands import (
-    AccessDeniedError,
-    APIOperation,
-    AsyncAPIOperation,
-    AsyncTask,
-    Task,
-    TaskBase,
-    TaskData,
-    TaskDataDeserializationError,
-    TaskDeserializationError,
-    TaskSerializationError,
-)
-from .structural import Entity, EntityRepository
+"""Release helper for interactive version bumps."""
 
-__all__ = [
-    "APIOperation",
-    "AsyncAPIOperation",
-    "AccessDeniedError",
-    "TaskBase",
-    "Task",
-    "AsyncTask",
-    "TaskDataDeserializationError",
-    "TaskData",
-    "TaskSerializationError",
-    "TaskDeserializationError",
-    "Entity",
-    "EntityRepository",
-    "__version__",
-]
-__version__ = "1.0.0"
+from __future__ import annotations
+
+import subprocess
+
+CHOICES = {
+    "1": "patch",
+    "patch": "patch",
+    "2": "minor",
+    "minor": "minor",
+    "3": "major",
+    "major": "major",
+}
+
+
+def pick_kind() -> str:
+    print("Select version bump:")
+    print("  1) patch")
+    print("  2) minor")
+    print("  3) major")
+    value = input().strip().lower()
+    try:
+        return CHOICES[value]
+    except KeyError as exc:
+        raise SystemExit("Invalid choice") from exc
+
+
+def main() -> None:
+    kind = pick_kind()
+    subprocess.run(["make", f"bump-{kind}"], check=True)
+
+
+main()

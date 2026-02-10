@@ -1,6 +1,6 @@
 [project]
 name = "moleql-patterns"
-version = "0.1.0"
+version = "1.0.0"
 description = "A lightweight Python library providing reusable base classes and design patterns for decoupled application architecture, built on Pydantic and inspired by FastAPI."
 readme = "README.md"
 requires-python = ">=3.12"
