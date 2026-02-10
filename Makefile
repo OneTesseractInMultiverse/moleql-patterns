@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help test format build hooks upgrade bump bump-patch bump-minor bump-major
+.PHONY: help test format build hooks upgrade bump bump-patch bump-minor bump-major tag
 
 ## Show available commands and their descriptions
 help:
@@ -53,3 +53,11 @@ bump-minor: ## Bump minor version (x.Y.z -> x.(Y+1).0)
 
 bump-major: ## Bump major version (X.y.z -> (X+1).0.0)
 	BUMP=major $(MAKE) bump
+
+tag: ## Create an annotated git tag from pyproject.toml (vX.Y.Z)
+	uv run python -c 'import re; from pathlib import Path; text=Path("pyproject.toml").read_text(); m=re.search(r"^version\\s*=\\s*\\\"([^\\\"]+)\\\"", text, re.M); \
+	if not m: raise SystemExit("version not found in pyproject.toml"); version=m.group(1); \
+	print(f"Tagging v{version}");' \
+	&& git tag -a v$$(uv run python -c 'import re; from pathlib import Path; text=Path("pyproject.toml").read_text(); m=re.search(r"^version\\s*=\\s*\\\"([^\\\"]+)\\\"", text, re.M); \
+	if not m: raise SystemExit("version not found in pyproject.toml"); print(m.group(1));') -m "Release v$$(uv run python -c 'import re; from pathlib import Path; text=Path("pyproject.toml").read_text(); m=re.search(r"^version\\s*=\\s*\\\"([^\\\"]+)\\\"", text, re.M); \
+	if not m: raise SystemExit("version not found in pyproject.toml"); print(m.group(1));')"
