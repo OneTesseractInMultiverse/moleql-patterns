@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from moleql_patterns.contracts import AsyncTask, Task, TaskData
+from moleql_patterns.commands import AsyncTask, Task, TaskData
 
 
 # =========================================================

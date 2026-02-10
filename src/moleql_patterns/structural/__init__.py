@@ -20,8 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Backward-compatible re-exports for task data commands."""
+from .entity import Entity
+from .repository import EntityRepository
 
-from .commands.task_data import TaskData, TaskDeserializationError, TaskSerializationError
-
-__all__ = ["TaskData", "TaskSerializationError", "TaskDeserializationError"]
+__all__ = ["Entity", "EntityRepository"]

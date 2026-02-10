@@ -23,7 +23,7 @@
 import pytest
 from pydantic import ValidationError
 
-from moleql_patterns.contracts import TaskData, TaskDeserializationError, TaskSerializationError
+from moleql_patterns.commands import TaskData, TaskDeserializationError, TaskSerializationError
 
 
 # =========================================================

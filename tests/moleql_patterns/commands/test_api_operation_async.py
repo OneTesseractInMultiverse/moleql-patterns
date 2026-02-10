@@ -20,66 +20,68 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import asyncio
+
 import pytest
 
-from moleql_patterns.contracts import AccessDeniedError
+from moleql_patterns.commands import AccessDeniedError
 
 from ._api_operation_shared import (
+    AsyncAccessDeniedOperation,
+    AsyncBaseExecuteOperation,
+    AsyncBaseVerifyAccessOperation,
+    AsyncFlagOperation,
+    AsyncMissingExecuteAsync,
+    AsyncMissingVerifyAccess,
     ExampleResult,
-    SyncAccessDeniedOperation,
-    SyncBaseExecuteOperation,
-    SyncBaseVerifyAccessOperation,
-    SyncFlagOperation,
-    SyncMissingExecute,
-    SyncMissingVerifyAccess,
 )
 
 
 # =========================================================
-# CLASS TEST API OPERATION VERIFY ACCESS
+# CLASS TEST ASYNC API OPERATION VERIFY ACCESS
 # =========================================================
-class TestAPIOperationVerifyAccess:
+class TestAsyncAPIOperationVerifyAccess:
     def test_verify_access_blocks_execution(self) -> None:
-        operation = SyncAccessDeniedOperation()
+        operation = AsyncAccessDeniedOperation()
 
         with pytest.raises(AccessDeniedError):
-            operation.execute()
+            asyncio.run(operation.execute_async())
 
     def test_verify_access_base_raises(self) -> None:
-        operation = SyncBaseVerifyAccessOperation()
+        operation = AsyncBaseVerifyAccessOperation()
 
         with pytest.raises(NotImplementedError):
-            operation.execute()
+            asyncio.run(operation.execute_async())
 
     def test_verify_access_is_required(self) -> None:
         with pytest.raises(TypeError):
-            SyncMissingVerifyAccess()
+            AsyncMissingVerifyAccess()
 
     def test_verify_access_runs(self) -> None:
-        operation = SyncFlagOperation()
+        operation = AsyncFlagOperation()
 
-        operation.execute()
+        asyncio.run(operation.execute_async())
 
         assert operation.access_checked is True
 
 
 # =========================================================
-# CLASS TEST API OPERATION EXECUTE
+# CLASS TEST ASYNC API OPERATION EXECUTE ASYNC
 # =========================================================
-class TestAPIOperationExecute:
-    def test_execute_returns_model(self) -> None:
-        operation = SyncFlagOperation()
+class TestAsyncAPIOperationExecuteAsync:
+    def test_execute_async_returns_model(self) -> None:
+        operation = AsyncFlagOperation()
 
-        result = operation.execute()
+        result = asyncio.run(operation.execute_async())
 
         assert isinstance(result, ExampleResult)
 
-    def test_execute_base_raises(self) -> None:
-        operation = SyncBaseExecuteOperation()
+    def test_execute_async_base_raises(self) -> None:
+        operation = AsyncBaseExecuteOperation()
 
         with pytest.raises(NotImplementedError):
-            operation.execute()
+            asyncio.run(operation.execute_async())
 
-    def test_execute_is_required(self) -> None:
+    def test_execute_async_is_required(self) -> None:
         with pytest.raises(TypeError):
-            SyncMissingExecute()
+            AsyncMissingExecuteAsync()

@@ -20,16 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from moleql_patterns.contracts import (
+from moleql_patterns.commands import (
     AsyncTask as ContractsAsyncTask,
 )
-from moleql_patterns.contracts import (
+from moleql_patterns.commands import (
     Task as ContractsTask,
 )
-from moleql_patterns.contracts import (
+from moleql_patterns.commands import (
     TaskBase as ContractsTaskBase,
 )
-from moleql_patterns.contracts import (
+from moleql_patterns.commands import (
     TaskDataDeserializationError as ContractsTaskDataDeserializationError,
 )
 from moleql_patterns.task import AsyncTask, Task, TaskBase, TaskDataDeserializationError

@@ -19,9 +19,3 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-"""Backward-compatible re-exports for task data commands."""
-
-from .commands.task_data import TaskData, TaskDeserializationError, TaskSerializationError
-
-__all__ = ["TaskData", "TaskSerializationError", "TaskDeserializationError"]

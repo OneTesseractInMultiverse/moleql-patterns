@@ -20,11 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Task contracts for synchronous and asynchronous background workers.
+"""Task commands for synchronous and asynchronous background workers.
 
 These base classes standardize how task payloads are validated and executed.
 They are intentionally abstract to enforce consistent task construction and
 execution patterns across different worker backends (e.g., Celery, Dramatiq).
+
+Example:
+    class SendEmailData(TaskData):
+        recipient: str
+        subject: str
+
+    class SendEmailTask(Task[SendEmailData]):
+        task_data_cls = SendEmailData
+
+        def __init__(self, payload: dict[str, Any], mailer: Mailer) -> None:
+            self._mailer = mailer
+            super().__init__(payload)
+
+        def exec(self) -> str:
+            self._mailer.send(self.task_data.recipient, self.task_data.subject)
+            return "sent"
 """
 
 from abc import ABC, abstractmethod
@@ -32,7 +48,7 @@ from typing import Any
 
 from .task_data import TaskData
 
-__all__ = ["TaskDataDeserializationError", "TaskBase", "Task", "AsyncTask"]
+__all__ = ["TaskBase", "Task", "AsyncTask", "TaskDataDeserializationError"]
 
 
 # =========================================================
@@ -66,7 +82,13 @@ class TaskBase[TaskDataT: TaskData](ABC):
 # CLASS TASK
 # =========================================================
 class Task[TaskDataT: TaskData](TaskBase[TaskDataT], ABC):
-    """Synchronous task contract."""
+    """Synchronous task contract with explicit dependency injection.
+
+    This pattern provides a consistent interface for background tasks while
+    enforcing constructor-based dependency injection. Concrete tasks should
+    declare their dependencies (database connections, API clients, caches, etc.)
+    in the ``__init__`` signature, then pass the task payload to ``super().__init__``.
+    """
 
     @abstractmethod
     def exec(self) -> Any:
@@ -78,7 +100,13 @@ class Task[TaskDataT: TaskData](TaskBase[TaskDataT], ABC):
 # CLASS ASYNC TASK
 # =========================================================
 class AsyncTask[TaskDataT: TaskData](TaskBase[TaskDataT], ABC):
-    """Asynchronous task contract."""
+    """Asynchronous task contract with explicit dependency injection.
+
+    This pattern provides a consistent interface for background tasks while
+    enforcing constructor-based dependency injection. Concrete tasks should
+    declare their dependencies (database connections, API clients, caches, etc.)
+    in the ``__init__`` signature, then pass the task payload to ``super().__init__``.
+    """
 
     @abstractmethod
     async def exec(self) -> Any:

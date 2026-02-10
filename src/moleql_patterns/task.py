@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Backward-compatible re-exports for task contracts."""
+"""Backward-compatible re-exports for task commands."""
 
-from .contracts.task import AsyncTask, Task, TaskBase, TaskDataDeserializationError
+from .commands.task import AsyncTask, Task, TaskBase, TaskDataDeserializationError
 
 __all__ = ["TaskBase", "Task", "AsyncTask", "TaskDataDeserializationError"]

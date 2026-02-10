@@ -21,13 +21,13 @@
 # SOFTWARE.
 
 from moleql_patterns.api_operation import AccessDeniedError, APIOperation, AsyncAPIOperation
-from moleql_patterns.contracts import (
+from moleql_patterns.commands import (
     AccessDeniedError as ContractsAccessDeniedError,
 )
-from moleql_patterns.contracts import (
+from moleql_patterns.commands import (
     APIOperation as ContractsAPIOperation,
 )
-from moleql_patterns.contracts import (
+from moleql_patterns.commands import (
     AsyncAPIOperation as ContractsAsyncAPIOperation,
 )
 

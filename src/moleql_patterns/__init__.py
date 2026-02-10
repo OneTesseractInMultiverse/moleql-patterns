@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .contracts import (
+from .commands import (
     AccessDeniedError,
     APIOperation,
     AsyncAPIOperation,
@@ -32,6 +32,7 @@ from .contracts import (
     TaskDeserializationError,
     TaskSerializationError,
 )
+from .structural import Entity, EntityRepository
 
 __all__ = [
     "APIOperation",
@@ -44,6 +45,8 @@ __all__ = [
     "TaskData",
     "TaskSerializationError",
     "TaskDeserializationError",
+    "Entity",
+    "EntityRepository",
     "__version__",
 ]
 __version__ = "0.1.0"

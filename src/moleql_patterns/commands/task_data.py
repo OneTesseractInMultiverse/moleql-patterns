@@ -61,7 +61,7 @@ class TaskData(BaseModel):
     """Base class for task payloads with correlation and serialization helpers.
 
     Subclasses should add task-specific fields and behavior. Keep them as pure
-    data contracts with explicit validation.
+    data commands with explicit validation.
     """
 
     model_config = ConfigDict(extra="forbid")

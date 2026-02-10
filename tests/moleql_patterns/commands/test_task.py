@@ -24,7 +24,7 @@ import asyncio
 
 import pytest
 
-from moleql_patterns.contracts import AsyncTask, Task, TaskBase, TaskDataDeserializationError
+from moleql_patterns.commands import AsyncTask, Task, TaskBase, TaskDataDeserializationError
 
 from ._task_shared import (
     AsyncTaskExample,

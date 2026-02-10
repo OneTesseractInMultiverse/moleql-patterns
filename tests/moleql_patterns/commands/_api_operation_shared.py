@@ -22,7 +22,7 @@
 
 from pydantic import BaseModel
 
-from moleql_patterns.contracts import AccessDeniedError, APIOperation, AsyncAPIOperation
+from moleql_patterns.commands import AccessDeniedError, APIOperation, AsyncAPIOperation
 
 
 # =========================================================
