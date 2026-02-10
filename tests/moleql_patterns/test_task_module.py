@@ -20,19 +20,33 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .api_operation import AccessDeniedError, APIOperation, AsyncAPIOperation
-from .task import AsyncTask, Task, TaskBase, TaskDataDeserializationError
-from .task_data import TaskData, TaskDeserializationError, TaskSerializationError
+from moleql_patterns.contracts import (
+    AsyncTask as ContractsAsyncTask,
+)
+from moleql_patterns.contracts import (
+    Task as ContractsTask,
+)
+from moleql_patterns.contracts import (
+    TaskBase as ContractsTaskBase,
+)
+from moleql_patterns.contracts import (
+    TaskDataDeserializationError as ContractsTaskDataDeserializationError,
+)
+from moleql_patterns.task import AsyncTask, Task, TaskBase, TaskDataDeserializationError
 
-__all__ = [
-    "APIOperation",
-    "AsyncAPIOperation",
-    "AccessDeniedError",
-    "TaskBase",
-    "Task",
-    "AsyncTask",
-    "TaskDataDeserializationError",
-    "TaskData",
-    "TaskSerializationError",
-    "TaskDeserializationError",
-]
+
+# =========================================================
+# CLASS TEST TASK MODULE EXPORTS
+# =========================================================
+class TestTaskModuleExports:
+    def test_task_base_reexport(self) -> None:
+        assert TaskBase is ContractsTaskBase
+
+    def test_task_reexport(self) -> None:
+        assert Task is ContractsTask
+
+    def test_async_task_reexport(self) -> None:
+        assert AsyncTask is ContractsAsyncTask
+
+    def test_task_data_deserialization_error_reexport(self) -> None:
+        assert TaskDataDeserializationError is ContractsTaskDataDeserializationError

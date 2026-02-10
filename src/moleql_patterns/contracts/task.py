@@ -19,3 +19,68 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+"""Task contracts for synchronous and asynchronous background workers.
+
+These base classes standardize how task payloads are validated and executed.
+They are intentionally abstract to enforce consistent task construction and
+execution patterns across different worker backends (e.g., Celery, Dramatiq).
+"""
+
+from abc import ABC, abstractmethod
+from typing import Any
+
+from .task_data import TaskData
+
+__all__ = ["TaskDataDeserializationError", "TaskBase", "Task", "AsyncTask"]
+
+
+# =========================================================
+# CLASS TASK DATA DESERIALIZATION ERROR
+# =========================================================
+class TaskDataDeserializationError(Exception):
+    """Raised when a task is missing its required task_data_cls contract."""
+
+
+# =========================================================
+# CLASS TASK BASE
+# =========================================================
+class TaskBase[TaskDataT: TaskData](ABC):
+    """Base class for task execution with validated payloads."""
+
+    task_data_cls: type[TaskDataT]
+    task_data: TaskDataT
+
+    def __init__(self, task_data: dict[str, Any]) -> None:
+        if self.__class__ is TaskBase:
+            raise TypeError("TaskBase is abstract. Subclass it and define task_data_cls.")
+        self._verify_task_data_class_is_set()
+        self.task_data = self.task_data_cls.from_payload(task_data)
+
+    def _verify_task_data_class_is_set(self) -> None:
+        if not hasattr(self, "task_data_cls") or self.task_data_cls is None:
+            raise TaskDataDeserializationError("task_data_cls must be defined on the Task class")
+
+
+# =========================================================
+# CLASS TASK
+# =========================================================
+class Task[TaskDataT: TaskData](TaskBase[TaskDataT], ABC):
+    """Synchronous task contract."""
+
+    @abstractmethod
+    def exec(self) -> Any:
+        """Execute the task synchronously."""
+        raise NotImplementedError
+
+
+# =========================================================
+# CLASS ASYNC TASK
+# =========================================================
+class AsyncTask[TaskDataT: TaskData](TaskBase[TaskDataT], ABC):
+    """Asynchronous task contract."""
+
+    @abstractmethod
+    async def exec(self) -> Any:
+        """Execute the task asynchronously."""
+        raise NotImplementedError

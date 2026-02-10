@@ -20,19 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .api_operation import AccessDeniedError, APIOperation, AsyncAPIOperation
-from .task import AsyncTask, Task, TaskBase, TaskDataDeserializationError
-from .task_data import TaskData, TaskDeserializationError, TaskSerializationError
+"""Backward-compatible re-exports for task contracts."""
 
-__all__ = [
-    "APIOperation",
-    "AsyncAPIOperation",
-    "AccessDeniedError",
-    "TaskBase",
-    "Task",
-    "AsyncTask",
-    "TaskDataDeserializationError",
-    "TaskData",
-    "TaskSerializationError",
-    "TaskDeserializationError",
-]
+from .contracts.task import AsyncTask, Task, TaskBase, TaskDataDeserializationError
+
+__all__ = ["TaskBase", "Task", "AsyncTask", "TaskDataDeserializationError"]
