@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help test format build hooks upgrade bump bump-patch bump-minor bump-major tag tag-push
+.PHONY: help test format build hooks upgrade bump bump-patch bump-minor bump-major tag tag-push release
 
 ## Show available commands and their descriptions
 help:
@@ -62,3 +62,13 @@ tag: ## Create an annotated git tag from pyproject.toml (vX.Y.Z)
 
 tag-push: ## Push the current tag to origin
 	git push origin --tags
+
+release: ## Interactive version bump (patch, minor, major)
+	@printf "Select version bump:\n  1) patch\n  2) minor\n  3) major\n"
+	@read -r choice; \
+	case $$choice in \
+	  1|patch) $(MAKE) bump-patch ;; \
+	  2|minor) $(MAKE) bump-minor ;; \
+	  3|major) $(MAKE) bump-major ;; \
+	  *) echo "Invalid choice"; exit 1 ;; \
+	esac
